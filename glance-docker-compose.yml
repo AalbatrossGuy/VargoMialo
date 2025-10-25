@@ -1,0 +1,485 @@
+title: "Vargo"
+
+pages:
+  - name: "Vargo Dashboard"
+    columns:
+
+      - size: small
+        widgets:
+          - type: calendar
+            first-day-of-week: monday
+
+          - type: clock
+            timezone: "timezone"
+            hour-format: 12h
+            show-seconds: false
+            show-date: true
+
+          - type: markets
+            markets:
+              - symbol: BTC
+                name: Bitcoin
+
+              - symbol: ETH
+                name: Ethereum
+
+              - symbol: SOL
+                name: Solana
+
+              - symbol: DOGE
+                name: DogeCoin
+
+          - type: reddit
+            title: "Reddit"
+            show-flairs: true
+            subreddit: name-of-your-subreddit
+            limit: 5
+            collapse-after: 3
+
+      - size: full
+        widgets:
+
+          - type: docker-containers
+            containers:
+              <container-1>:
+                name: Name 1
+                description: Desc 1
+                icon: simple-icons-icon
+                hide: false
+
+              <container-2>:
+                name: Name 2
+                url: Url
+                description: Desc 2
+                icon: simple-icons-icon
+
+              <container-3>:
+                hide: true
+
+              <container-4>:
+                hide: true
+
+              <container-5>:
+                name: Name 5
+                url: Url
+                description: Desc 5
+                icon: simple-icons-icon
+
+              <container-6>:
+                name: Name 6
+                url: url
+                description: Desc 6
+                icon: simple-icons-icon
+
+              <container-7>:
+                hide: true
+
+              <container-8>:
+                name: Name 8
+                url: url
+                description: Desc 8
+                icon: simple-icons-icon
+
+              <container-9>:
+                name: Name 9
+                url: url
+                description: Desc 9
+                icon: simple-icons-icon
+
+              <container-10>:
+                name: Name 10
+                url: url
+                description: Desc 10
+                icon: simple-icons-icon
+
+
+              <container-11>:
+                name: Name 11
+                url: url
+                description: Desc 11
+                icon: simple-icons-icon
+
+              <container-12>:
+                hide: true
+
+            sort-by: cpu
+            limit: 8
+            refresh-interval: 15
+
+          - type: monitor
+            cache: 5m              # HTTP check every 5 minutes
+            title: "Services"
+            sites:
+              - title: Service_1
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+              - title: Service_2
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+              - title: Service_3
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+              - title: Service_4
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+              - title: Service_5
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+              - title: Service_6
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+              - title: Service_7
+                url: site-url
+                timeout: 12s
+                icon: simple-icons-icon
+
+          - type: server-stats
+            title: "Server Metrics"
+            servers:
+              - type: remote
+                name: "Vargo"
+                url: glance-agent-url
+                timeout: 12s
+            refresh-interval: 10
+
+          - type: custom-api
+            cache: 1h
+            title: Internet Speed
+            title-url: title-url
+            url: url
+            headers:
+              Authorization: Bearer <TOKEN>
+              Accept: application/json
+            subrequests:
+              stats:
+                url: https://your.speedtest.com/api/v1/stats
+                headers:
+                  Authorization: Bearer <TOKEN>
+                  Accept: application/json
+            options:
+              showPercentageDiff: true
+            template: |
+              {{ $showPercentage := .Options.BoolOr "showPercentageDiff" true }}
+
+              {{ $stats := .Subrequest "stats" }}
+              <div class="flex justify-between text-center margin-block-3">
+              <div>
+                  {{ $downloadChange := percentChange ($stats.JSON.Float "data.download.avg_bits") (.JSON.Float "data.download_bits")
+                  }}
+                  {{ if $showPercentage }}
+                  <div
+                  class="size-small {{ if gt $downloadChange 0.0 }}color-positive{{ else if lt $downloadChange 0.0 }}color-negative{{ else }}color-primary{{ end }}"
+                  style="display: inline-flex; align-items: center;">
+                  {{ $downloadChange | printf "%+.1f%%" }}
+                  {{ if gt $downloadChange 0.0 }}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                      style="height: 1em; margin-left: 0.25em;" class="size-4">
+                      <path fill-rule="evenodd"
+                      d="M9.808 4.057a.75.75 0 0 1 .92-.527l3.116.849a.75.75 0 0 1 .528.915l-.823 3.121a.75.75 0 0 1-1.45-.382l.337-1.281a23.484 23.484 0 0 0-3.609 3.056.75.75 0 0 1-1.07.01L6 8.06l-3.72 3.72a.75.                        75 0 1 1-1.06-1.061l4.25-4.25a.75.75 0 0 1 1.06 0l1.756 1.755a25.015 25.015 0 0 1 3.508-2.85l-1.46-.398a.75.75 0 0 1-.526-.92Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  {{ else if lt $downloadChange 0.0 }}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                      style="height: 1em; margin-left: 0.25em;" class="size-4">
+                      <path fill-rule="evenodd"
+                      d="M1.22 4.22a.75.75 0 0 1 1.06 0L6 7.94l2.761-2.762a.75.75 0 0 1 1.158.12 24.9 24.9 0 0 1 2.718 5.556l.729-1.261a.75.75 0 0 1 1.299.75l-1.591 2.755a.75.75 0 0 1-1.025.275l-2.756-1.591a.75.7                      5 0 1 1 .75-1.3l1.097.634a23.417 23.417 0 0 0-1.984-4.211L6.53 9.53a.75.75 0 0 1-1.06 0L1.22 5.28a.75.75 0 0 1 0-1.06Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  {{ end }}
+                  </div>
+                  {{ end }}
+                  <div class="color-highlight size-h3">{{ .JSON.Float "data.download_bits" | mul 0.000001 | printf "%.1f" }}</div>
+                  <div class="size-h6">DOWNLOAD</div>
+              </div>
+              <div>
+                  {{ $uploadChange := percentChange ($stats.JSON.Float "data.upload.avg_bits") (.JSON.Float "data.upload_bits") }}
+                  {{ if $showPercentage }}
+                  <div
+                  class="size-small {{ if gt $uploadChange 0.0 }}color-positive{{ else if lt $uploadChange 0.0 }}color-negative{{ else }}color-primary{{ end }}"
+                  style="display: inline-flex; align-items: center;">
+                  {{ $uploadChange | printf "%+.1f%%" }}
+                  {{ if gt $uploadChange 0.0 }}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                      style="height: 1em; margin-left: 0.25em;" class="size-4">
+                      <path fill-rule="evenodd"
+                      d="M9.808 4.057a.75.75 0 0 1 .92-.527l3.116.849a.75.75 0 0 1 .528.915l-.823 3.121a.75.75 0 0 1-1.45-.382l.337-1.281a23.484 23.484 0 0 0-3.609 3.056.75.75 0 0 1-1.07.01L6 8.06l-3.72 3.72a.75.                      75 0 1 1-1.06-1.061l4.25-4.25a.75.75 0 0 1 1.06 0l1.756 1.755a25.015 25.015 0 0 1 3.508-2.85l-1.46-.398a.75.75 0 0 1-.526-.92Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  {{ else if lt $uploadChange 0.0 }}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                      style="height: 1em; margin-left: 0.25em;" class="size-4">
+                      <path fill-rule="evenodd"
+                      d="M1.22 4.22a.75.75 0 0 1 1.06 0L6 7.94l2.761-2.762a.75.75 0 0 1 1.158.12 24.9 24.9 0 0 1 2.718 5.556l.729-1.261a.75.75 0 0 1 1.299.75l-1.591 2.755a.75.75 0 0 1-1.025.275l-2.756-1.591a.75.7                      5 0 1 1 .75-1.3l1.097.634a23.417 23.417 0 0 0-1.984-4.211L6.53 9.53a.75.75 0 0 1-1.06 0L1.22 5.28a.75.75 0 0 1 0-1.06Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  {{ end }}
+                  </div>
+                  {{ end }}
+                  <div class="color-highlight size-h3">{{ .JSON.Float "data.upload_bits" | mul 0.000001 | printf "%.1f" }}</div>
+                  <div class="size-h6">UPLOAD</div>
+              </div>
+              <div>
+                  {{ $pingChange := percentChange ($stats.JSON.Float "data.ping.avg") (.JSON.Float "data.ping") }}
+                  {{ if $showPercentage }}
+                  <div
+                  class="size-small {{ if gt $pingChange 0.0 }}color-negative{{ else if lt $pingChange 0.0 }}color-positive{{ else }}color-primary{{ end }}"
+                  style="display: inline-flex; align-items: center;">
+                  {{ $pingChange | printf "%+.1f%%" }}
+                  {{ if lt $pingChange 0.0 }}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                      style="height: 1em; margin-left: 0.25em;" class="size-4">
+                      <path fill-rule="evenodd"
+                      d="M1.22 4.22a.75.75 0 0 1 1.06 0L6 7.94l2.761-2.762a.75.75 0 0 1 1.158.12 24.9 24.9 0 0 1 2.718 5.556l.729-1.261a.75.75 0 0 1 1.299.75l-1.591 2.755a.75.75 0 0 1-1.025.275l-2.756-1.591a.75.7                      5 0 1 1 .75-1.3l1.097.634a23.417 23.417 0 0 0-1.984-4.211L6.53 9.53a.75.75 0 0 1-1.06 0L1.22 5.28a.75.75 0 0 1 0-1.06Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  {{ else if gt $pingChange 0.0 }}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                      style="height: 1em; margin-left: 0.25em;" class="size-4">
+                      <path fill-rule="evenodd"
+                      d="M9.808 4.057a.75.75 0 0 1 .92-.527l3.116.849a.75.75 0 0 1 .528.915l-.823 3.121a.75.75 0 0 1-1.45-.382l.337-1.281a23.484 23.484 0 0 0-3.609 3.056.75.75 0 0 1-1.07.01L6 8.06l-3.72 3.72a.75.                      75 0 1 1-1.06-1.061l4.25-4.25a.75.75 0 0 1 1.06 0l1.756 1.755a25.015 25.015 0 0 1 3.508-2.85l-1.46-.398a.75.75 0 0 1-.526-.92Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  {{ end }}
+                  </div>
+                  {{ end }}
+                  <div class="color-highlight size-h3">{{ .JSON.Float "data.ping" | printf "%.0f ms" }}</div>
+                  <div class="size-h6">PING</div>
+              </div>
+              </div>
+
+
+          - type: custom-api
+            title: Nearby Aircraft
+            cache: 1m
+            url: "https://opensky-network.org/api/states/all?lamin=min-latitude&lomin=min-longitude&lamax=max-latitutde&lomax=max-longitude"
+            template: |-
+              <div class="opensky-aircraft-stats">
+                {{ $states := .JSON.Array "states" }}
+                {{ $statesCount := len $states }}
+
+                <div class="margin-block-2">
+                  <div class="size-h6">AIRCRAFT NEARBY: {{ $statesCount }}</div>
+                </div>
+
+                {{ if gt $statesCount 0 }}
+                  {{ $plane := index $states 0 }}
+                  {{ $callsign := $plane.String "1" }}
+                  {{ $icao24 := $plane.String "0" }}
+                  {{ $origin := $plane.String "2" }}
+                  {{ $onGround := $plane.Bool "8" }}
+                  {{ $altitude := $plane.Float "7" }}
+                  {{ $speed := $plane.Float "9" }}
+
+                  <div class="margin-block-2">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                      <div>
+                        <div class="color-highlight size-h3">
+                          {{ if ne $callsign "" }}{{ $callsign }}{{ else }}{{ $icao24 }}{{ end }}
+                        </div>
+                        <div class="size-h6">CALLSIGN</div>
+                      </div>
+                      <div>
+                        <div class="color-highlight size-h3 text-truncate" style="max-width: 100%;">
+                          {{ if ne $origin "" }}{{ $origin }}{{ else }}-{{ end }}
+                        </div>
+                        <div class="size-h6">ORIGIN</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="margin-block-2">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                      <div>
+                        <div class="color-highlight size-h3">
+                          {{ if and (not $onGround) (ne $altitude 0.0) }}{{ printf "%.0f" $altitude }}m{{ else }}-{{ end }}
+                        </div>
+                        <div class="size-h6">ALTITUDE</div>
+                      </div>
+                      <div>
+                        <div class="color-highlight size-h3">
+                          {{ if and (not $onGround) (ne $speed 0.0) }}{{ printf "%.0f" $speed }}m/s{{ else }}-{{ end }}
+                        </div>
+                        <div class="size-h6">SPEED</div>
+                      </div>
+                    </div>
+                  </div>
+                {{ end }}
+              </div>
+
+
+          - type: group
+            layout: horizontal
+            widgets:
+              - type: custom-api
+                title: "F1 • Next Race"
+                cache: 1h
+                url: "https://f1api.dev/api/current/next?timezone={TIMEZONE}"
+                template: |-
+                  {{ $img := "https://cdn-icons-png.flaticon.com/512/668/668087.png" }}
+                  {{ $race := .JSON.String "race.0.raceName" }}
+                  {{ if not $race }}{{ $race = (printf "Round %s" (.JSON.String "round")) }}{{ end }}
+                  {{ $date := .JSON.String "race.0.schedule.race.date" }}
+                  {{ $time := .JSON.String "race.0.schedule.race.time" }}
+                  {{ $cname := .JSON.String "race.0.circuit.circuitName" }}
+                  {{ $city := .JSON.String "race.0.circuit.city" }}
+                  {{ $country := .JSON.String "race.0.circuit.country" }}
+
+                  <div style="display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:start">
+                    <img src="{{ $img }}" alt="F1" style="width:56px;height:56px;object-fit:contain;opacity:.9;filter:grayscale(1);" />
+                    <div>
+                      <div class="size-h4 color-highlight">{{ $race }}</div>
+                      <div class="size-h6">{{ $cname }}</div>
+                      <div class="size-h6">{{ $city }}, {{ $country }}</div>
+                      <div class="size-h6" style="margin-top:6px">
+                        Race: {{ $date }} {{ if $time }}• {{ $time }}{{ end }}
+                      </div>
+                      <div style="border-top:1px solid;margin-top:10px;padding-top:8px" class="size-h6">
+                        FP1: {{ .JSON.String "race.0.schedule.fp1.date" }} {{ if .JSON.String "race.0.schedule.fp1.time" }}• {{ .JSON.String "race.0.schedule.fp1.time" }}{{ end }}<br/>
+                        Qualy: {{ .JSON.String "race.0.schedule.qualy.date" }} {{ if .JSON.String "race.0.schedule.qualy.time" }}• {{ .JSON.String "race.0.schedule.qualy.time" }}{{ end }}
+                      </div>
+                    </div>
+                  </div>
+
+              - type: custom-api
+                title: "F1 • Last Race Result"
+                cache: 12h
+                url: "https://f1api.dev/api/current/last?timezone={TIMEZONE}"
+                template: |-
+                  {{ $img := "https://cdn-icons-png.flaticon.com/512/668/668087.png" }}
+                  {{ $name := .JSON.String "race.0.raceName" }}
+                  {{ $cname := .JSON.String "race.0.circuit.circuitName" }}
+                  {{ $city := .JSON.String "race.0.circuit.city" }}
+                  {{ $country := .JSON.String "race.0.circuit.country" }}
+                  {{ $date := .JSON.String "race.0.schedule.race.date" }}
+                  {{ $winName := .JSON.String "race.0.winner.name" }}
+                  {{ $winSur := .JSON.String "race.0.winner.surname" }}
+                  {{ $winShort := .JSON.String "race.0.winner.shortName" }}
+                  {{ $team := .JSON.String "race.0.teamWinner.teamName" }}
+                  {{ $laps := .JSON.String "race.0.laps" }}
+
+                  <div style="display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:start">
+                    <img src="{{ $img }}" alt="Winner" style="width:56px;height:56px;object-fit:contain;opacity:.9;filter:grayscale(1);" />
+                    <div>
+                      <div class="size-h4 color-highlight">{{ $name }}</div>
+                      <div class="size-h6">{{ $cname }}</div>
+                      <div class="size-h6">{{ $city }}, {{ $country }}</div>
+                      <div class="size-h6" style="margin-top:6px">Race: {{ $date }} • Laps: {{ $laps }}</div>
+
+                      <div style="border-top:1px solid;margin-top:10px;padding-top:8px">
+                        <div class="size-h5 color-positive">Winner</div>
+                        <div class="size-h3">
+                          {{ if $winShort }}{{ $winShort }} · {{ end }}{{ $winName }} {{ $winSur }}
+                        </div>
+                        <div class="size-h6">{{ $team }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+
+      - size: small
+        widgets:
+          - type: weather
+            location: Location
+            units: metric
+            hour-format: 12h
+
+          - type: custom-api
+            title: Air Quality
+            cache: 10m
+            url: "https://api.waqi.info/feed/geo:coordinates/?token=generate-token-from-site"
+            template: |-
+              {{ $aqi := printf "%03s" (.JSON.String "data.aqi") }}
+              {{ $aqiraw := .JSON.String "data.aqi" }}
+              {{ $updated := .JSON.String "data.time.iso" }}
+              {{ $humidity := .JSON.Float "data.iaqi.h.v" }}
+              {{ $ozone := .JSON.String "data.iaqi.o3.v" }}
+              {{ $pm25 := .JSON.String "data.iaqi.pm25.v" }}
+              {{ $pressure := .JSON.Float "data.iaqi.p.v" }}
+
+              <div class="flex justify-between">
+                <div class="size-h5">
+                  {{ if le $aqi "050" }}
+                    <div class="color-positive">Good air quality</div>
+                  {{ else if le $aqi "100" }}
+                    <div class="color-primary">Moderate air quality</div>
+                  {{ else }}
+                    <div class="color-negative">Bad air quality</div>
+                  {{ end }}
+                </div>
+              </div>
+
+              <div class="color-highlight size-h2">AQI: {{ $aqiraw }}</div>
+              <div style="border-bottom: 1px solid; margin-block: 10px;"></div>
+
+              <div class="margin-block-2">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+
+                  <div>
+                    <div class="size-h3 color-highlight">{{ printf "%.1f" $humidity }}%</div>
+                    <div class="size-h6">HUMIDITY</div>
+                  </div>
+
+                  <div>
+                    <div class="size-h3 color-highlight">{{ $ozone }} μg/m³</div>
+                    <div class="size-h6">OZONE</div>
+                  </div>
+
+                  <div>
+                    <div class="size-h3 color-highlight">{{ $pm25 }} μg/m³</div>
+                    <div class="size-h6">PM2.5</div>
+                  </div>
+
+                  <div>
+                    <div class="size-h3 color-highlight">{{ printf "%.1f" $pressure }} hPa</div>
+                    <div class="size-h6">PRESSURE</div>
+                  </div>
+
+                </div>
+
+                <div class="size-h6" style="margin-top: 10px;">Last Updated at {{ slice $updated 11 16 }}</div>
+              </div>
+
+
+          - type: custom-api
+            title: Random Capybara
+            cache: 10m
+            url: "https://animals.maxz.dev/api/capybara/random"
+            template: |-
+              {{ $img := .JSON.String "image" }}
+              {{ if $img }}
+                <img src="{{ $img }}" style="width:100%;height:auto;border-radius:8px;" />
+              {{ else }}
+                <div class="color-negative">No image in API response</div>
+              {{ end }}
+
+
+          - type: releases
+            show-source-icon: true
+            token: Github_TOKEN
+            repositories:
+              - nextcloud/server
+              - dani-garcia/vaultwarden
+              - portainer/portainer
+              - fastapi/fastapi
+            limit: 6
+            refresh-interval: 43200  # 12 hours
+
+          - type: to-do
+            title: "Todo"
+            items:
+              - text: "Add more services to Monitor"
+                done: false
+              - text: "Tune server-stats agent"
+                done: false
