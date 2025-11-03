@@ -13,7 +13,8 @@ Config files and other READMEs for my server, Vargo. Instructions and other stuf
 →  [Mazanoke](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#mazanoke)  <br>
 →  [Speedtest Tracker](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#speedtest-tracker)  <br>
 →  [Portainer](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#portainer)  <br>
-→  [Item Links](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#item-links)  <br>
+→  [Paperless NGX](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#paperless)  <br>
+→  [ConvertX](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#convertx)  <br>
 
 ## The Story
 I always wanted to tinker with Raspberry Pis and other Single Board Computers (SBCs). Got an idea to make a server out of it cause why not. After going through various Pi models, I decided to get the Raspberry Pi 5 16GB version. Alibaba gave the cheapest option however the delivery date was too late, around 2-3 months 🥲 I couldn't wait that long, hence, bought it off a third-party website. Other components for the Pi were available in Amazon and were delivered within 2-3 days. I'll attach links at the end if someone wants to have a look at them. 
@@ -260,6 +261,130 @@ volumes:
 Managing docker containers via the command line is honestly a pain, hence, portainer.
 
 Installed portainer by following the instructions in their docs - [Portainer Installation Instructions](https://docs.portainer.io/start/install/server/docker/linux)
+
+### [Paperless](https://docs.paperless-ngx.com/)
+
+<img width="600" height="600" alt="2025-11-03_19-34" src="https://github.com/user-attachments/assets/5d416196-5746-40c6-b6f2-ea8ba6d42cf3" />
+
+
+Amongst document management system, paperless ngx shines bright. It was a no-brainer to self-host this too! With it's OCR capabilities and it's search on steroids, it is one of the most feature-rich service in my self-hosted services drawer.
+The `docker-compose.yml` for paperless is:
+
+```yaml
+services:
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8080:80"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=TIMEZONE
+      - PAPERLESS_TIME_ZONE=TIMEZONE
+      - PAPERLESS_DBHOST=DB_HOST
+      - PAPERLESS_DBPORT=DB_PORT
+      - PAPERLESS_DBNAME=DB
+      - PAPERLESS_DBUSER=USER
+      - PAPERLESS_DBPASS=PASSWORD
+      - PAPERLESS_REDIS=redis://redis:5330/0
+      - PAPERLESS_CONSUMPTION_DIR=PATH # Give the path of the directory you want paperless to watch for files
+      - PAPERLESS_CONSUMPTION_DIR_MONITOR=0 # Paperless polls instead of inotify monitoring
+      - PAPERLESS_CONSUMPTION_DIR_RECURSIVE=1 # Read through nested folders
+      - PAPERLESS_CONSUMER_RECURSIVE=true
+      - PAPERLESS_OCR_MODE=skip # Skip if unable to OCR any document
+      - PAPERLESS_OCR_SKIP_IF_OCR_FAILS=false
+      - PAPERLESS_OCR_RETRY_ON_FAIL=false
+      - PAPERLESS_CONSUMER_ENABLE_IMAGE_CONVERSION=true # Enables image pre-processing
+      - PAPERLESS_CONSUMER_GS_OPTIONS=--continue-on-soft-render-error
+      - PAPERLESS_CONSUME_COPY=true # If set to true, it copies files in the watch dir instead of moving them.
+      - PAPERLESS_ALLOWED_HOSTS=PAPERLESS_URL
+      - PAPERLESS_CSRF_TRUSTED_ORIGINS=PAPERLESS_URL_WITH_HTTPS
+      - PAPERLESS_URL=PAPERLESS_URL
+      - PAPERLESS_CONSUMER_POLLING=1
+      - PAPERLESS_CONSUMER_POLLING_SECONDS=15 # Check every 15 seconds for new file addition in watch dir
+      - PAPERLESS_WORKER_TIMEOUT=3600  # 1 hour
+      - PAPERLESS_WORKER_SOFT_TIME_LIMIT=3500 # 58 minutes 20 seconds
+
+    volumes:
+      - /opt/paperless/data:/usr/src/paperless/data
+      - /opt/paperless/media:/usr/src/paperless/media
+
+  db:
+    image: postgres:16-alpine
+    container_name: paperless-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=DB
+      - POSTGRES_USER=USER
+      - POSTGRES_PASSWORD=PASSWORD
+      - TZ=TIMEZONE
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperless -d paperless || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - paperless-pg:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: paperless-redis
+    restart: unless-stopped
+    command: ["redis-server","--appendonly","yes"]
+    healthcheck:
+      test: ["CMD","redis-cli","ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - paperless-redis:/data
+
+volumes:
+  paperless-pg:
+  paperless-redis:
+
+```
+
+One thing to be noted is, I've set paperless to watch a specific folder in nextcloud for consumption. Hence, whenever I upload a document in that particular folder, paperless consumes the file and archives it.
+
+### [ConvertX](https://github.com/C4illin/ConvertX)
+
+<img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/5c748528-fffb-4558-9b13-1e98c5d5a853" />
+
+
+With the frequent need for a secure, easy to use file conversion service, I wanted to host mine. With over 1000+ file type conversion support, ConvertX was my choice. It is light-weight, simple and secure. 
+The `docker-compose.yml` for this service:
+
+```yaml
+# docker-compose.yml
+services:
+  convertx:
+    image: ghcr.io/c4illin/convertx
+    container_name: convertx
+    restart: unless-stopped
+    ports:
+      - "53400:3000"
+    environment:
+      - TZ=TIMEZONE
+      - ALLOW_UNAUTHENTICATED=false
+      - ACCOUNT_REGISTRATION=false
+      - AUTO_DELETE_EVERY_N_HOURS=24
+      - HIDE_HISTORY=false
+      - JWT_SECRET=generate_your_own_token # will use randomUUID() if unset
+      # - HTTP_ALLOWED=true # uncomment this if accessing it over a non-https connection
+    volumes:
+      - ./data:/app/data
+      - ./bin/soffice:/usr/local/bin/soffice:ro
+      - ./bin/libreoffice:/usr/local/bin/libreoffice:ro
+      - ./bin/loffice:/usr/local/bin/loffice:ro
+
+```
+
 
 ## Item Links
 → Rasberry Pi 5 (16GB) - [Amazon](https://www.amazon.com/Raspberry-Pi-SC1113-5-16GB/dp/B0DSPYPKRG) <br>
