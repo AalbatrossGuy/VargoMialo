@@ -15,6 +15,7 @@ Config files and other READMEs for my server, Vargo. Instructions and other stuf
 →  [Portainer](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#portainer)  <br>
 →  [Paperless NGX](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#paperless)  <br>
 →  [ConvertX](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#convertx)  <br>
+→  [Item Links](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#item-links)  <br>
 
 ## The Story
 I always wanted to tinker with Raspberry Pis and other Single Board Computers (SBCs). Got an idea to make a server out of it cause why not. After going through various Pi models, I decided to get the Raspberry Pi 5 16GB version. Alibaba gave the cheapest option however the delivery date was too late, around 2-3 months 🥲 I couldn't wait that long, hence, bought it off a third-party website. Other components for the Pi were available in Amazon and were delivered within 2-3 days. I'll attach links at the end if someone wants to have a look at them. 
