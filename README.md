@@ -1,6 +1,6 @@
 # Vargo Myaló
-Config files and other READMEs for my server, Vargo. Instructions and other stuff also included to document my experience.
-Trivia: "Myaló" is a common way of saying "Brain" in Greek. Due to my fascination towards Greek mythology, everything related to the server has a Greek essence to it.
+Config files and other READMEs for my server, Vargo. Instructions and other stuff are also included to document my experience.
+Trivia: [Myaló](https://en.wiktionary.org/wiki/%CE%BC%CF%85%CE%B1%CE%BB%CF%8C) is a common way of saying "Brain" in Greek. Due to my fascination towards Greek mythology, everything related to the server has a Greek essence to it.
 
 # Contents
 →  [The Story](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#the-story) <br>
