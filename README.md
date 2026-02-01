@@ -1,5 +1,6 @@
-# Vargo Mialo
-Config files and other READMEs for my server, Vargo. Instructions and other stuff also included to document my experience
+# Vargo Myaló
+Config files and other READMEs for my server, Vargo. Instructions and other stuff also included to document my experience.
+Trivia: "Myaló" is a common way of saying "Brain" in Greek. Due to my fascination towards Greek mythology, everything related to the server has a Greek essence to it.
 
 # Contents
 →  [The Story](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#the-story) <br>
@@ -9,7 +10,9 @@ Config files and other READMEs for my server, Vargo. Instructions and other stuf
 →  [Item Links](https://github.com/AalbatrossGuy/VargoDotfiles/blob/main/README.md#item-links) <br>
 
 # The Story
-I always wanted to tinker with Raspberry Pis and other Single Board Computers (SBCs). Got an idea to make a server out of it cause why not. After going through various Pi models, I decided to get the Raspberry Pi 5 16GB version. Alibaba gave the cheapest option however the delivery date was too late, around 2-3 months 🥲 I couldn't wait that long, hence, bought it off a third-party website. Other components for the Pi were available in Amazon and were delivered within 2-3 days. I'll attach links at the end if someone wants to have a look at them.
+I always wanted to tinker with Raspberry Pis and other Single Board Computers (SBCs). Got an idea to make a server out of it cause why not. After going through various Pi models, I decided to get the Raspberry Pi 5 16GB version. Alibaba gave the cheapest option however the delivery date was too late, around 2-3 months 🥲 I couldn't wait that long, hence, bought it off a third-party website. Other components for the Pi were available in Amazon and were delivered within 2-3 days. I'll attach links at the end if someone wants to have a look at them. 
+
+P.S. - The Blog site for Vargo is up and can be viewed at [Vargo Blog](https://vargo.vargoseus.com).
 
 <details>
 <summary><strong>Some Pictures Of The Pi</strong></summary>
