@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vargo</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Vargo">
+    <meta property="og:description" content="Blog for my homelab.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ request.host_url[:-1] }}{{ url_for('static', filename='images/server-internals.webp') }}">
+    <meta property="og:image:alt" content="Server Images">
+    <meta property="og:site_name" content="Vargo">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vargo">
+    <meta name="twitter:description" content="Blog for my homelab.">
+    <meta name="twitter:image" content="{{ request.host_url[:-1] }}{{ url_for('static', filename='images/server-internals.webp') }}">
+
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script>
@@ -19,7 +35,7 @@
                 <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Vargo logo" class="brand-logo">
                 <div class="brand-text">
                     <h1>Vargo</h1>
-                    <p class="subtitle">Homelabbing continues...</p>
+                    <p class="subtitle">AG's Homelab</p>
                 </div>
             </div>
             <nav class="site-nav">
