@@ -26,8 +26,13 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     margin: 0;
+    overflow-x: hidden;
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -594,27 +599,182 @@ li {
 }
 
 @media (max-width: 700px) {
+    .container {
+        width: 100%;
+        padding: 28px 16px 60px;
+        box-sizing: border-box;
+    }
+
+    .site-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    .brand-logo {
+        height: 48px;
+    }
+
+    .site-header h1 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    .site-nav a {
+        margin-left: 12px;
+        font-size: 13px;
+    }
+
+    .theme-toggle {
+        margin-left: 12px;
+        width: 48px;
+        height: 28px;
+    }
+
+    .theme-toggle-thumb {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+
+    [data-theme="dark"] .theme-toggle-thumb {
+        transform: translateX(20px);
+    }
+
     .gallery-featured {
         flex-direction: column;
         height: auto;
     }
+
     .gallery-portrait {
         flex: none;
-        height: 320px;
+        height: 260px;
     }
+
     .gallery-video {
+        height: 200px;
+    }
+
+    .gallery-strip {
+        aspect-ratio: unset;
+        height: 80px;
+    }
+
+    .gallery-strip .media-wrap {
+        height: 80px;
+    }
+
+    .gallery-strip img {
+        object-fit: cover;
+    }
+
+    .fullscreen-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .lightbox-content {
+        max-width: 100vw;
+        max-height: 100vh;
+        padding: 52px 8px 8px;
+        box-sizing: border-box;
+    }
+
+    .lightbox-img {
+        max-width: 100%;
+        max-height: 85vh;
+        width: 100%;
+        height: auto;
+    }
+
+    .lightbox-close {
+        position: fixed;
+        top: 6px;
+        right: 8px;
+        width: 44px;
+        height: 44px;
+        font-size: 22px;
+    }
+
+    .carousel-slide {
         height: 220px;
     }
-    .gallery-strip {
-        aspect-ratio: 3 / 1;
-    }
-    .carousel-slide {
-        height: 336px;
-    }
+
     .service-grid {
         grid-template-columns: 1fr;
     }
+
     .card {
-        padding: 20px;
+        padding: 20px 16px;
+    }
+
+    .card h2 {
+        font-size: 22px;
+    }
+
+    body {
+        font-size: 17px;
+    }
+
+    .img-tooltip {
+        width: min(320px, 80vw);
+        left: 50%;
+        transform: translate(-50%, 4px);
+    }
+
+    .img-tag:hover .img-tooltip,
+    .img-tag:focus .img-tooltip {
+        transform: translate(-50%, 0);
+    }
+
+    .price-tooltip {
+        left: 50%;
+        transform: translate(-50%, 4px);
+    }
+
+    .price-tag:hover .price-tooltip,
+    .price-tag:focus .price-tooltip {
+        transform: translate(-50%, 0);
+    }
+}
+
+@media (max-width: 420px) {
+    .brand-logo {
+        height: 40px;
+    }
+
+    .site-header h1 {
+        font-size: 20px;
+    }
+
+    .site-nav a {
+        margin-left: 10px;
+        font-size: 12px;
+    }
+
+    .carousel-slide {
+        height: 180px;
+    }
+
+    .gallery-portrait {
+        height: 220px;
+    }
+
+    .gallery-video {
+        height: 160px;
+    }
+
+    .gallery-strip {
+        height: 60px;
+    }
+
+    .gallery-strip .media-wrap {
+        height: 60px;
     }
 }
