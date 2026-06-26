@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vargo</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <div class="brand">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Vargo logo" class="brand-logo">
+                <div class="brand-text">
+                    <h1>Vargo</h1>
+                    <p class="subtitle">Homelabbing continues...</p>
+                </div>
+            </div>
+            <nav class="site-nav">
+                <a href="https://pi.vargoseus.com" target="_blank" rel="noopener">VargoPi</a>
+                <a href="https://vargoseus.com" target="_blank" rel="noopener">Dashboard</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+                    <span class="theme-toggle-thumb">&#9789;</span>
+                </button>
+            </nav>
+        </header>
+
+        <div class="gallery">
+            <div class="gallery-featured">
+                <div class="gallery-portrait">
+                    <div class="media-wrap">
+                        <img src="{{ url_for('static', filename='images/server-internals.webp') }}" alt="Server internals, top-down view">
+                        <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                    </div>
+                </div>
+                <div class="gallery-video">
+                    <video controls muted loop playsinline>
+                        <source src="{{ url_for('static', filename='images/IMG_9576.webm') }}" type="video/webm">
+                    </video>
+                </div>
+            </div>
+            <div class="gallery-strips">
+                <div class="gallery-strip gallery-strip--rear">
+                    <div class="media-wrap">
+                        <img src="{{ url_for('static', filename='images/server-rear.webp') }}" alt="Server rear ports">
+                        <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                    </div>
+                </div>
+                <div class="gallery-strip gallery-strip--front">
+                    <div class="media-wrap">
+                        <img src="{{ url_for('static', filename='images/server-front.webp') }}" alt="Server front bays">
+                        <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="card">
+            <h2>Introduction</h2>
+            <p>
+                After spending almost a year with the <a href="https://pi.vargoseus.com" class="dotted-link" target="_blank" rel="noopener">Raspberry Pi 5 ↗</a>, I decided that I needed an upgrade. 
+                Don't get me wrong the <a href="https://www.raspberrypi.com/products/raspberry-pi-5/" class="dotted-link" target="_blank" rel="noopener">Raspberry Pi 5 ↗</a> a pretty strong single board computer (SBC) that can 
+                more or less run everything you throw at it. Its power efficiency is obviously the best among
+                SBCs. However, my end goal is to properly learn system administration, servers and networking.
+                Hence, sticking with only the pi would not contribute to my long term learning goals. 
+                I also love tinkering with computers - especially hardware, so now is the best time to finally
+                get a rack server for myself. Then again, as we all know, buying a brand new rack server is stupidly
+                expensive and not practical. 
+            </p>
+            <p>
+               
+                After combing through the entire Internet, I finally found a <a href="https://aonecomputers.in/" class="dotted-link" target="_blank" rel="noopener">reseller ↗</a> with good enough reviews,
+                who seemed trustworthy enough. After going through their website, consulting people having
+                professional experience with servers and the <a href="https://www.reddit.com/r/homelab/" class="dotted-link" target="_blank" rel="noopener">home labbing community ↗</a>, I zeroed in on the 
+                <a href="https://i.dell.com/sites/csdocuments/Shared-Content_data-Sheets_Documents/en/us/Dell-PowerEdge-R430-Spec-Sheet.pdf" class="dotted-link" target="_blank" rel="noopener">Dell PowerEdge R430 ↗</a>.
+                The homelabbing community did warn me about it's high idle power consumption. Personal research showed idle
+                power consumption would be approx. 80-100w of energy (after getting the server & running it for a month and
+                a half now, idle power consumption is between <span class="img-tag" tabindex="0">100-116w<span class="img-tooltip"><img src="{{ url_for('static', filename='images/powerconsumption.webp') }}" alt="Power consumption reading"></span></span>). As my power bill is cheaper than other states, this was acceptable to me.
+                Weighing all information, I moved forward with the purchase. 
+
+                Since I bought from server resellers, all servers in the catalouge came pre-configured.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Server Specifications</h2>
+            <p>
+                The PowerEdge R430 came with <mark class="spec-highlight">2x Intel Xeon E5-2680 v4</mark> which gave a
+                combined count of <mark class="spec-highlight">28 cores & 56 threads</mark>. As for the RAM, it came with
+                <mark class="spec-highlight">64GB of DDR4 memory</mark> (which is pretty good in this economy, I'd say)
+                along with <mark class="spec-highlight">8TB of SAS LFF storage</mark>. This was a steal deal considering
+                I got all this for <span class="price-tag" data-inr="59999" tabindex="0">₹59,999<span class="price-tooltip">Loading&hellip;</span></span>. The
+                <span class="img-tag" tabindex="0">shipment<span class="img-tooltip"><img src="{{ url_for('static', filename='images/shipment.webp') }}" alt="Server shipment box"></span></span> arrived
+                after 3 weeks (tortorous wait icl) and the first thing I did was run a full hardware diagnostics. At first,
+                I got an error from one of the RAM sticks but it was nothing reseating couldn't fix. One of the HDDs
+                however had 3 bad sectors which was a mild cause for concern. Currently I plan on doing nothing but in the
+                near future it will need replacement. One interesting thing I learnt while going through the <a href="https://www.dell.com/en-us/lp/dt/open-manage-idrac" class="dotted-link" target="_blank" rel="noopener">iDRAC ↗ </a> was
+                that the server was in use for only 2 years after which it was offline for nearly 1.5 years until I bought it & turned it on.
+                Pretty cool huh!
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Monitoring</h2>
+            <div class="carousel" data-carousel>
+                <div class="carousel-track">
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/monitoring-1.webp') }}" alt="Grafana monitoring dashboard">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/monitoring-2.webp') }}" alt="Grafana monitoring dashboard">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/monitoring-3.webp') }}" alt="Grafana monitoring dashboard">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-arrow carousel-arrow--prev" aria-label="Previous image" type="button">&#8249;</button>
+                <button class="carousel-arrow carousel-arrow--next" aria-label="Next image" type="button">&#8250;</button>
+                <div class="carousel-dots"></div>
+            </div>
+            <p>
+                Upgrading from the Raspberry Pi 5 to a rack server meant I could collect proper telemetry. These servers expose
+                nearly every component's telemetry data through exporters like Node, IPMI, cAdvisor, etc. I then use <a href="https://prometheus.io/" class="dotted-link" target="_blank" rel="noopener">Prometheus ↗</a>
+                to scrape the data from these exporters and visualise them via a self-hosted instance of <a href="https://grafana.com/" class="dotted-link" target="_blank" rel="noopener">Grafana Dashboard ↗</a>. 
+                Web services are monitored via <a href="https://uptimekuma.org/" class="dotted-link" target="_blank" rel="noopener">UptimeKuma ↗</a> which pings me via <a href="https://github.com/binwiederhier/ntfy" class="dotted-link" target="_blank" rel="noopener">ntfy ↗</a> whenever they go down.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Networking</h2>
+            <div class="carousel" data-carousel>
+                <div class="carousel-track">
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/Network_Topology.webp') }}" alt="Network topology diagram">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/networking-1.webp') }}" alt="Networking setup photo">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/networking-2.webp') }}" alt="Networking setup photo">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="media-wrap">
+                            <img src="{{ url_for('static', filename='images/networking-3.webp') }}" alt="Networking setup photo">
+                            <button class="fullscreen-btn" aria-label="View fullscreen" type="button">&#9974;</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-arrow carousel-arrow--prev" aria-label="Previous image" type="button">&#8249;</button>
+                <button class="carousel-arrow carousel-arrow--next" aria-label="Next image" type="button">&#8250;</button>
+                <div class="carousel-dots"></div>
+            </div>
+            <p>
+                I previously had a <a href="https://www.tp-link.com/us/home-networking/wifi-router/archer-ax72-pro/" class="dotted-link" target="_blank" rel="noopener"><mark class="spec-highlight">TpLink Archer AX72 ↗</mark></a> which got the job done pretty well. It had 4 ethernet ports
+                out of which 3 were already connected. Hence it was obvious that a single port wouldn't suffice
+                for the server which requires two ethernet connections - one for iDRAC & one for the internet.
+                It was finally time to upgrade the networking setup. Unifi was the obvious choice since I liked
+                their devices for a long time now. After doing some research, got the <a href="https://store.ui.com/us/en/products/ucg-ultra" class="dotted-link" target="_blank" rel="noopener"><mark class="spec-highlight">UCG-Ultra ↗</mark></a> the
+                <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-5" class="dotted-link" target="_blank" rel="noopener"><mark class="spec-highlight">USW Flex 2.5G 5 port PoE managed switch ↗</mark></a>. I know the switch will need to be upgraded in the future,
+                but for now, this is enough. The TpLink router now runs in Access Point (AP) mode and provides
+                wireless internet. I have plans to upgrade to a Unifi AP device soon enough.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Hosted Services</h2>
+            <div class="service-grid">
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/calibre_ebook.svg') }}" alt="CalibreBooks logo"></div>
+                    <div class="service-info">
+                        <h4>CalibreBooks</h4>
+                        <p>E-books Manager.</p>
+                        <a href="https://calibre-ebook.com" target="_blank" rel="noopener">calibre-ebook.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/convertx.png') }}" alt="Convert X logo"></div>
+                    <div class="service-info">
+                        <h4>Convert X</h4>
+                        <p>File Conversion.</p>
+                        <a href="https://github.com/C4illin/ConvertX" target="_blank" rel="noopener">github.com/ConvertX</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/glance.svg') }}" alt="Glance Dashboard logo"></div>
+                    <div class="service-info">
+                        <h4>Dashboard</h4>
+                        <p>Glance Dashboard.</p>
+                        <a href="https://github.com/glanceapp/glance" target="_blank" rel="noopener">github.com/glance</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/drawio.svg') }}" alt="Draw.io logo"></div>
+                    <div class="service-info">
+                        <h4>Draw.io</h4>
+                        <p>Diagram Whiteboard.</p>
+                        <a href="https://www.drawio.com" target="_blank" rel="noopener">drawio.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/grafana.svg') }}" alt="Grafana logo"></div>
+                    <div class="service-info">
+                        <h4>Grafana</h4>
+                        <p>Visualization Dashboard.</p>
+                        <a href="https://grafana.com" target="_blank" rel="noopener">grafana.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/immich.svg') }}" alt="Immich logo"></div>
+                    <div class="service-info">
+                        <h4>Immich</h4>
+                        <p>Photo & Video Library.</p>
+                        <a href="https://immich.app" target="_blank" rel="noopener">immich.app</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/it-tools.svg') }}" alt="IT Tools logo"></div>
+                    <div class="service-info">
+                        <h4>IT Tools</h4>
+                        <p>AIO Utility Toolkit.</p>
+                        <a href="https://it-tools.tech" target="_blank" rel="noopener">it-tools.tech</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/keycloak.svg') }}" alt="KeyCloak logo"></div>
+                    <div class="service-info">
+                        <h4>KeyCloak</h4>
+                        <p>Auth Manager.</p>
+                        <a href="https://www.keycloak.org" target="_blank" rel="noopener">keycloak.org</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/linkwarden.webp') }}" alt="LinkWarden logo"></div>
+                    <div class="service-info">
+                        <h4>LinkWarden</h4>
+                        <p>Link Manager.</p>
+                        <a href="https://linkwarden.app" target="_blank" rel="noopener">linkwarden.app</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/listmonk.svg') }}" alt="ListMonk logo"></div>
+                    <div class="service-info">
+                        <h4>ListMonk</h4>
+                        <p>Newsletter Service.</p>
+                        <a href="https://listmonk.app" target="_blank" rel="noopener">listmonk.app</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/littlelink.svg') }}" alt="Little Link logo"></div>
+                    <div class="service-info">
+                        <h4>Little Link</h4>
+                        <p>LinkTree Alternative.</p>
+                        <a href="https://github.com/sethcottle/littlelink" target="_blank" rel="noopener">github.com/littlelink</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/mazanoke.webp') }}" alt="Mazanoke logo"></div>
+                    <div class="service-info">
+                        <h4>Mazanoke</h4>
+                        <p>Image Compressor.</p>
+                        <a href="https://mazanoke.com" target="_blank" rel="noopener">mazanoke.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/onlyoffice.svg') }}" alt="OnlyOffice logo"></div>
+                    <div class="service-info">
+                        <h4>OnlyOffice</h4>
+                        <p>Office Suite.</p>
+                        <a href="https://www.onlyoffice.com" target="_blank" rel="noopener">onlyoffice.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/outline.svg') }}" alt="Outline logo"></div>
+                    <div class="service-info">
+                        <h4>Outline</h4>
+                        <p>Personal Knowledge Base.</p>
+                        <a href="https://www.getoutline.com" target="_blank" rel="noopener">getoutline.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/paperless-ngx.svg') }}" alt="Paperless NGX logo"></div>
+                    <div class="service-info">
+                        <h4>Paperless NGX</h4>
+                        <p>Document Archive Manager.</p>
+                        <a href="https://docs.paperless-ngx.com" target="_blank" rel="noopener">docs.paperless-ngx.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/portainer.svg') }}" alt="Portainer logo"></div>
+                    <div class="service-info">
+                        <h4>Portainer</h4>
+                        <p>Container Management.</p>
+                        <a href="https://www.portainer.io" target="_blank" rel="noopener">portainer.io</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/prometheus.svg') }}" alt="Prometheus logo"></div>
+                    <div class="service-info">
+                        <h4>Prometheus</h4>
+                        <p>Monitoring Service.</p>
+                        <a href="https://prometheus.io" target="_blank" rel="noopener">prometheus.io</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/seafile.svg') }}" alt="Seafile logo"></div>
+                    <div class="service-info">
+                        <h4>Seafile</h4>
+                        <p>File Storage.</p>
+                        <a href="https://www.seafile.com" target="_blank" rel="noopener">seafile.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/searxng.svg') }}" alt="SearXNG logo"></div>
+                    <div class="service-info">
+                        <h4>SearXNG</h4>
+                        <p>Metasearch Engine.</p>
+                        <a href="https://docs.searxng.org" target="_blank" rel="noopener">docs.searxng.org</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/shlink.svg') }}" alt="Shlink logo"></div>
+                    <div class="service-info">
+                        <h4>Shlink</h4>
+                        <p>Url Shortener.</p>
+                        <a href="https://shlink.io" target="_blank" rel="noopener">shlink.io</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/stirling-pdf.svg') }}" alt="Stirling PDF logo"></div>
+                    <div class="service-info">
+                        <h4>Stirling PDF</h4>
+                        <p>PDF Utilities.</p>
+                        <a href="https://github.com/Stirling-Tools/Stirling-PDF" target="_blank" rel="noopener">github.com/Stirling-PDF</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/privatebin.svg') }}" alt="Privatebin logo"></div>
+                    <div class="service-info">
+                        <h4>Privatebin</h4>
+                        <p>Self-Hosted and Encrypted Pastebin.</p>
+                        <a href="https://privatebin.info" target="_blank" rel="noopener">privatebin.info</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/gitea.svg') }}" alt="Gitea logo"></div>
+                    <div class="service-info">
+                        <h4>Gitea</h4>
+                        <p>GitHub Alternative.</p>
+                        <a href="https://about.gitea.com" target="_blank" rel="noopener">about.gitea.com</a>
+                    </div>
+                </div>
+                <div class="service">
+                    <div class="service-icon"><img src="{{ url_for('static', filename='images/logos/vaultwarden.svg') }}" alt="VaultWarden logo"></div>
+                    <div class="service-info">
+                        <h4>VaultWarden</h4>
+                        <p>Password Manager.</p>
+                        <a href="https://github.com/dani-garcia/vaultwarden" target="_blank" rel="noopener">github.com/vaultwarden</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Future Goals</h2>
+            <ul>
+                <li>Add a 32U rack.</li>
+                <li>Upgrade UCG-Ultra to a Dream Machine Pro</li>
+                <li>Upgrade the 5 port switch to a Unifi Standard 24 PoE switch.</li>
+                <li>Add a 5G internet backup system.</li>
+                <li>Get another server, preferably another Dell rack server & connect them in a cluster.</li>
+                <li>Add some workstation GPUs to the server.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Conclusion</h2>
+            <p>
+                I ain't gonna lie, going down this never ending rabbit hole is quite fun but reality
+                hits when you get to know its an expensive hobby. I don't mind waiting to slowly build
+                my "dream homelab" but the wish to get everything at once lingers at the back of my
+                mind. Maintaining this setup is a hefty task too. You never know when some component
+                would break. You always have to keep spares in hand & redundancy would be crucial if
+                you don't want to lose your data. My home has a backup power system so I am not too
+                worried about the server shutting down but what worries me is not having a backup
+                internet to fallback to. Well, sooner than later I would find a fix for it too.
+            </p>
+            <p>
+                I am still learning how to properly maintain these systems and once you know what you're
+                doing or what you're supposed to do, its quite fun really! Maybe in the future I will sell some
+                compute too since I am not using 100% of its resources. 
+            </p>
+            <p>
+                Well thats all for now, hope you enjoyed reading this blog. If you wanna connect with me,
+                checkout my <a href="https://socials.vargoseus.com" class="dotted-link" target="_blank" rel="noopener">socials ↗</a>.
+                I'm mostly active on discord so you can hit me up there too.
+            </p>
+            <a class="back-to-top" href="#top">&uarr; Back to Top</a>
+        </section>
+
+        <footer class="site-footer">
+            <p>Built with &hearts; by <a href="https://github.com/AalbatrossGuy" class="dotted-link" target="_blank" rel="noopener">AG ↗</a></p>
+        </footer>
+    </div>
+
+    <div class="lightbox" id="lightbox" hidden>
+        <div class="lightbox-content">
+            <button class="lightbox-close" aria-label="Close fullscreen view" type="button">&times;</button>
+            <img class="lightbox-img" src="" alt="">
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
