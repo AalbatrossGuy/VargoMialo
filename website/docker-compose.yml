@@ -1,0 +1,7 @@
+services:
+  vargo-website:
+    build: .
+    container_name: vargo-website
+    ports:
+      - "9520:9520"
+    restart: unless-stopped
